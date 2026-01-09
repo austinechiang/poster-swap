@@ -1,0 +1,170 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>海報交換 - PosterSwap</title>
+    <link rel="stylesheet" href="{% static 'posters/styles.css' %}">
+</head>
+<body>
+    <!-- 登入畫面 -->
+    <div id="loginScreen" class="screen active">
+        <div class="container">
+            <h1 class="logo">PosterSwap</h1>
+            <p class="subtitle">交換你的電影海報</p>
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="使用者名稱" required>
+                <input type="password" id="password" placeholder="密碼" required>
+                <button type="submit" class="btn-primary">登入</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 設定步驟 1：輸入想交換的海報 -->
+    <div id="setupStep1Screen" class="screen">
+        <div class="container">
+            <div class="step-indicator">
+                <span class="step active">1</span>
+                <span class="step-line"></span>
+                <span class="step">2</span>
+                <span class="step-line"></span>
+                <span class="step">3</span>
+            </div>
+            
+            <h2>步驟 1：我想交換出去的海報</h2>
+            <p class="hint-text" style="text-align: left;">請輸入你想交換出去的電影海報名稱</p>
+            
+            <div class="input-group">
+                <input type="text" id="offerPoster" placeholder="電影名稱（例如：東京教父）">
+                <button id="addOfferBtn" class="btn-secondary">加入</button>
+            </div>
+            
+            <ul id="offerList" class="poster-list"></ul>
+            
+            <button id="step1NextBtn" class="btn-primary">確定，下一步</button>
+        </div>
+    </div>
+
+    <!-- 設定步驟 2：上傳海報照片 -->
+    <div id="setupStep2Screen" class="screen">
+        <div class="container">
+            <div class="step-indicator">
+                <span class="step completed">✓</span>
+                <span class="step-line completed"></span>
+                <span class="step active">2</span>
+                <span class="step-line"></span>
+                <span class="step">3</span>
+            </div>
+            
+            <h2>步驟 2：上傳海報實體照片</h2>
+            <p class="hint-text" style="text-align: left;">請為每部電影海報上傳實體照片</p>
+            
+            <div id="photoUploadList" class="photo-upload-list">
+                <!-- 動態生成上傳欄位 -->
+            </div>
+            
+            <div class="button-group">
+                <button id="step2BackBtn" class="btn-secondary">上一步</button>
+                <button id="step2NextBtn" class="btn-primary">確定，下一步</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 設定步驟 3：選擇想要的種類 -->
+    <div id="setupStep3Screen" class="screen">
+        <div class="container">
+            <div class="step-indicator">
+                <span class="step completed">✓</span>
+                <span class="step-line completed"></span>
+                <span class="step completed">✓</span>
+                <span class="step-line completed"></span>
+                <span class="step active">3</span>
+            </div>
+            
+            <h2>步驟 3：我想收到的海報種類</h2>
+            <p class="hint-text" style="text-align: left;">請選擇你感興趣的電影海報種類（最多3個）</p>
+            
+            <div id="categoryGrid" class="category-grid">
+                <button class="category-btn" data-category="漫威系列">漫威系列</button>
+                <button class="category-btn" data-category="DC系列">DC系列</button>
+                <button class="category-btn" data-category="今敏導演">今敏導演</button>
+                <button class="category-btn" data-category="宮崎駿">宮崎駿</button>
+                <button class="category-btn" data-category="台灣國片">台灣國片</button>
+                <button class="category-btn" data-category="近期院線">近期院線</button>
+                <button class="category-btn" data-category="經典老片">經典老片</button>
+                <button class="category-btn" data-category="恐怖驚悚">恐怖驚悚</button>
+                <button class="category-btn" data-category="科幻動作">科幻動作</button>
+                <button class="category-btn" data-category="愛情文藝">愛情文藝</button>
+                <button class="category-btn" data-category="動畫電影">動畫電影</button>
+                <button class="category-btn" data-category="獨立製片">獨立製片</button>
+            </div>
+            
+            <div id="selectedCategories" class="selected-categories">
+                <p class="selected-title">已選擇：<span id="categoryCount">0/3</span></p>
+                <div id="selectedList" class="selected-list"></div>
+            </div>
+            
+            <div class="button-group">
+                <button id="step3BackBtn" class="btn-secondary">上一步</button>
+                <button id="step3CompleteBtn" class="btn-primary">完成設定，開始交換</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主滑動畫面 -->
+    <div id="swipeScreen" class="screen">
+        <header class="app-header">
+            <h1 class="logo-small">PosterSwap</h1>
+            <div class="header-icons">
+                <button id="chatBtn" class="icon-btn">💬</button>
+                <button id="profileBtn" class="icon-btn">👤</button>
+            </div>
+        </header>
+
+        <div class="swipe-container">
+            <div id="cardStack" class="card-stack">
+                <!-- 卡片會動態生成 -->
+            </div>
+            
+            <div class="swipe-buttons">
+                <button id="rejectBtn" class="swipe-btn reject">✕</button>
+                <button id="likeBtn" class="swipe-btn like">♥</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 配對成功畫面 -->
+    <div id="matchScreen" class="screen">
+        <div class="match-container">
+            <h2 class="match-title">配對成功！</h2>
+            <div class="match-posters">
+                <div class="match-poster" id="myMatchPoster"></div>
+                <div class="match-poster" id="theirMatchPoster"></div>
+            </div>
+            <p class="match-text">你們可以開始討論海報交換細節了！</p>
+            <button id="startChatBtn" class="btn-primary">開始聊天</button>
+            <button id="continueSwipeBtn" class="btn-secondary">繼續瀏覽</button>
+        </div>
+    </div>
+
+    <!-- 聊天畫面 -->
+    <div id="chatScreen" class="screen">
+        <header class="chat-header">
+            <button id="backBtn" class="icon-btn">←</button>
+            <h3 id="chatUsername">使用者名稱</h3>
+        </header>
+        
+        <div id="chatMessages" class="chat-messages">
+            <!-- 訊息會動態生成 -->
+        </div>
+        
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="輸入訊息">
+            <button id="sendBtn" class="btn-primary">傳送</button>
+        </div>
+    </div>
+
+    <script src="{% static 'posters/script.js' %}"></script>
+</body>
+</html>
