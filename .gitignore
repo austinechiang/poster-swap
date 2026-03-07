@@ -7,7 +7,7 @@ __pycache__/
 *.pyc
 
 # 3. 不要上傳本地資料庫 (除非你想公開裡面的測試資料)
-db.sqlite3
+# db.sqlite3
 
 # 4. 其他系統垃圾
 .DS_Store

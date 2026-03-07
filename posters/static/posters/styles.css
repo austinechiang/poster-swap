@@ -482,22 +482,20 @@ input[type="file"] {
 .poster-card img {
     width: 100%;
     height: 65%; 
-    object-fit: contain; /* 關鍵！改成 contain 代表「完整顯示整張圖」不要裁切 */
-    background-color: #0f0f0f; /* 圖片沒填滿的地方用黑色補，才不會覺得空空的 */
-}
+    object-fit: contain; 
+    background-color: #0f0f0f; 
 
 .card-info {
-    padding: 15px;
-    height: 35%; /* 配合圖片，這裡拿剩下的 35% */
-    display: flex; /* 開啟排版魔法 */
-    flex-direction: column; /* 由上往下排 */
-    justify-content: flex-start; 
-    gap: 15px;
-    overflow: visible; /* <--- 關鍵！千萬不要 hidden，不然會被切掉 */
+    padding: 15px; 
+    height: 35%; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+    overflow: visible; 
 }
 
 .card-info h3 {
-    font-size: 20px; /* 原本 24px，標題改小一點 */
+    font-size: 20px; 
     margin-bottom: 4px;
     color: #D4FF5B;
     white-space: nowrap; /* 讓標題不要換行 */
@@ -507,24 +505,25 @@ input[type="file"] {
 
 .card-info p {
     color: #aaa;
-    margin-bottom: 6px;ss
+    margin-bottom: 6px;
 }
 
 .card-info .category-tags {
-    margin-top: 8px;
+    margin-top: 8px; 
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 12px; 
 }
 
 .card-tag {
     display: inline-block;
     background: #0F0F0F;
-    padding: 5px 12px;
-    border-radius: 15px;
-    font-size: 12px;
+    padding: 6px 12px; 
+    border-radius: 20px; 
+    font-size: 12px; 
     border: 1px solid #D4FF5B;
     color: #D4FF5B;
+    margin-right: 6px;
 }
 
 /* 滑動按鈕 */

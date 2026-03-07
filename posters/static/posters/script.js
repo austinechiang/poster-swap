@@ -255,14 +255,21 @@ function createCard(poster) {
         <img src="${poster.image}" alt="${poster.posterName}">
         
         <div class="card-info">
+            <div class="card-info">
             <div>
                 <h3>${poster.posterName}</h3>
-                <p style="color: #888; font-size: 14px;">上傳者：${poster.user}</p>
+                <p style="color: #888; font-size: 14px; margin-top: 4px;">
+                    上傳者：${poster.user} <br>
+                    <span style="color: #FFD700; font-weight: bold;">⭐ ${poster.rating}</span> 
+                    <span style="font-size: 12px; margin-left: 5px;">（已完成 ${poster.tradeCount} 次交換）</span>
+                </p>
             </div>
 
             <div>
                 <p style="color: #aaa; font-size: 12px; margin-bottom: 5px;">想交換的類型：</p>
-                <div class="category-tags">${categoryTags}</div>
+            <div class="card-tags">
+                ${categoryTags}
+            </div>
             </div>
         </div>
     `;
