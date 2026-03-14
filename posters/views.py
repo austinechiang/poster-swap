@@ -25,3 +25,42 @@ def get_posters_api(request):
         })
 
     return JsonResponse({'posters': data})
+
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+from .models import UserProfile
+
+# 黑客松趕時間絕招：暫時豁免 CSRF 驗證，讓前端 fetch 更順利
+@csrf_exempt 
+def rate_user_api(request):
+    if request.method == 'POST':
+        try:
+            # 解析前端傳來的資料
+            data = json.loads(request.body)
+            target_username = data.get('target_user')
+            score = float(data.get('score', 5))
+
+            # 找到被評價的使用者
+            target_user = User.objects.get(username=target_username)
+            profile, created = UserProfile.objects.get_or_create(user=target_user)
+
+            # 計算新的平均分數
+            if profile.trade_count == 0:
+                # 如果是第一次交易，直接覆蓋預設的 5.0
+                profile.rating = score
+            else:
+                # 如果有歷史紀錄，計算平均：(原本總分 + 這次分數) / 總次數
+                total_score = profile.rating * profile.trade_count
+                profile.rating = (total_score + score) / (profile.trade_count + 1)
+            
+            # 交易次數 +1
+            profile.trade_count += 1
+            profile.save()
+
+            return JsonResponse({'status': 'success', 'new_rating': round(profile.rating, 1)})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+            
+    return JsonResponse({'status': 'error', 'message': 'Only POST allowed'}, status=405)

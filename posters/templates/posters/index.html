@@ -150,10 +150,30 @@
 
     <!-- 聊天畫面 -->
     <div id="chatScreen" class="screen">
-        <header class="chat-header">
-            <button id="backBtn" class="icon-btn">←</button>
-            <h3 id="chatUsername">使用者名稱</h3>
-        </header>
+    <div class="chat-header">
+
+        <button id="backBtn" class="icon-btn">⬅</button>
+        <h3 id="chatUsername">使用者</h3>
+        <button id="finishTradeBtn" class="btn-primary" style="padding: 8px 15px; margin: 0; font-size: 14px; width: auto;">完成交換</button>
+    </div>
+
+<div id="ratingModal" class="rating-modal">
+    <div class="rating-content">
+        <h3 style="color: #D4FF5B; margin-bottom: 15px;">交換完成！</h3>
+        <p>請為 <span id="ratingTargetUser"></span> 留下評價</p>
+        
+        <div class="stars" id="starContainer">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+        </div>
+        
+        <button id="submitRatingBtn" class="btn-primary">送出評價</button>
+        <button id="cancelRatingBtn" class="btn-secondary">稍後再評</button>
+    </div>
+</div>
         
         <div id="chatMessages" class="chat-messages">
             <!-- 訊息會動態生成 -->

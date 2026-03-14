@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('api/posters/', views.get_posters_api, name='api'),
+    path('api/rate/', views.rate_user_api, name='rate_user'), # 新增這行
 ]
 
 # 這一行才是正確的寫法 (把原本的 ... 換成真的參數)

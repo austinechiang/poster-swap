@@ -410,10 +410,81 @@ function sendMessage() {
         input.value = '';
         
         setTimeout(() => {
-            addMessage('你好～我們來討論一下交換細節吧！', false);
+            addMessage('我已經收到海報了，謝謝！', false);
         }, 1000);
     }
 }
+
+// ========== 評價系統邏輯 ==========
+let currentScore = 5; // 預設 5 星
+
+// 1. 打開彈窗
+document.getElementById('finishTradeBtn').addEventListener('click', () => {
+    document.getElementById('ratingTargetUser').textContent = currentChatUser;
+    document.getElementById('ratingModal').classList.add('active');
+    updateStars(5); // 預設點亮 5 顆星
+});
+
+// 2. 關閉彈窗
+document.getElementById('cancelRatingBtn').addEventListener('click', () => {
+    document.getElementById('ratingModal').classList.remove('active');
+});
+
+// 3. 點擊星星的效果
+const stars = document.querySelectorAll('.star');
+stars.forEach(star => {
+    star.addEventListener('click', (e) => {
+        currentScore = parseInt(e.target.dataset.value);
+        updateStars(currentScore);
+    });
+});
+
+function updateStars(score) {
+    stars.forEach(star => {
+        if (parseInt(star.dataset.value) <= score) {
+            star.classList.add('active');
+        } else {
+            star.classList.remove('active');
+        }
+    });
+}
+
+// 4. 送出評價給 Django 後端
+document.getElementById('submitRatingBtn').addEventListener('click', () => {
+    const btn = document.getElementById('submitRatingBtn');
+    btn.textContent = '傳送中...';
+    btn.disabled = true;
+
+    // 呼叫我們剛剛寫的 Django API
+    fetch('/api/rate/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            target_user: currentChatUser,
+            score: currentScore
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.status === 'success') {
+            alert(`評價成功！${currentChatUser} 的最新評分變為 ⭐ ${data.new_rating}`);
+            document.getElementById('ratingModal').classList.remove('active');
+            showScreen('swipeScreen'); // 評完價回到首頁繼續滑
+        } else {
+            alert('評價失敗：' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('網路錯誤，請稍後再試！');
+    })
+    .finally(() => {
+        btn.textContent = '送出評價';
+        btn.disabled = false;
+    });
+});
 
 function addMessage(text, isSent) {
     const messagesContainer = document.getElementById('chatMessages');
